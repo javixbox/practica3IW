@@ -59,6 +59,19 @@ public class PostsFacadeREST extends AbstractFacade<Posts> {
     public Posts find(@PathParam("id") Integer id) {
         return super.find(id);
     }
+    
+    /**
+     * Metodo para buscar una entrada dando el nombre de una ciudad.
+     * @param city
+     * @return 
+     */
+    @GET
+    @Path("{city}")
+    @Produces({"application/xml", "application/json"})
+    public List<Posts> find(@PathParam("city") String city){
+        return em.createNamedQuery("Posts.findByCiudad", Posts.class).setParameter("ciudad", city)
+                .getResultList();
+    }
 
     @GET
     @Override

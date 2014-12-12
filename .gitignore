@@ -13,9 +13,6 @@
 *dist/
 *build/
 *test/
-*/conf/
-*conf/
-*WEB-INF/
 *nbproject/private/
 */nbproject/ant-deploy.xml
 */nbproject/build-impl.xml
