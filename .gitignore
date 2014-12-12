@@ -17,7 +17,7 @@
 *conf/
 *WEB-INF/
 *nbproject/private/
-*nbproject/ant-deploy.xml
-*nbproject/build-impl.xml
-*nbproject/genfiles.properties
-*nbproject/rest-build.xml
+*/nbproject/ant-deploy.xml
+*/nbproject/build-impl.xml
+*/nbproject/genfiles.properties
+*/nbproject/rest-build.xml
