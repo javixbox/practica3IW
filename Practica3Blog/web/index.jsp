@@ -4,9 +4,6 @@
     Author     : Alberto
 --%>
 
-<%@page import="java.util.List"%>
-<%@page import="entity.Posts"%>
-<%@page import="rest.JerseyPosts"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,9 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
-            getServletContext().getRequestDispatcher("/TestServlet").forward(request, response);
-        %>
-        <h1>Hello World!</h1>
+        <% getServletContext().getRequestDispatcher("/index").forward(request, response); %>
     </body>
 </html>

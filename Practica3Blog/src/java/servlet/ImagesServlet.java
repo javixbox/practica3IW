@@ -5,27 +5,25 @@
  */
 package servlet;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.owlike.genson.Genson;
-import entity.Posts;
+import com.flickr4java.flickr.Flickr;
+import com.flickr4java.flickr.REST;
+import com.flickr4java.flickr.photos.Photo;
+import com.flickr4java.flickr.photos.PhotoList;
+import com.flickr4java.flickr.photos.SearchParameters;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.GenericType;
-import rest.JerseyPosts;
 
 /**
  *
  * @author Alberto
  */
-@WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
-public class TestServlet extends HttpServlet {
+@WebServlet(name = "ImagesServlet", urlPatterns = {"/getImages"})
+public class ImagesServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +36,26 @@ public class TestServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JerseyPosts posts = new JerseyPosts();
-        List<Posts> all = posts.<List<Posts>>findAll(new GenericType<List<Posts>>(){});
-        System.out.println(all.get(0).getAutor());
-        posts.close();
+        try {
+            String city = request.getReader().readLine();
+            Flickr api = new Flickr("d5da76b17d9aecf7269aad552ffffdc1", "483b74baa31f129c", new REST());
+            SearchParameters parameters = new SearchParameters();
+            parameters.setTags(new String[]{city});
+            PhotoList<Photo> list = api.getPhotosInterface().search(parameters, 20, 0);
+            PrintWriter pw = response.getWriter();
+            if (list.isEmpty()) {
+                pw.println("<h1>No existen fotos de la ciudad buscada.<h1/>");
+            } else {
+                pw.println("<h1>Elija una foto:<h1/><br/>");
+                for (Photo p : list) {
+                    pw.println("<label><input type=\"radio\" name=\"image\" value=\""
+                            + p.getMediumUrl() + "\" /><img src=\"" + p.getMediumUrl() + "\" width=\"400px\""
+                            + " height=\"400px\"></label>");
+                }
+            }
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
