@@ -6,21 +6,24 @@
 package servlet;
 
 import entity.Posts;
+import entity.Comments;
 import java.io.IOException;
-import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.GenericType;
+import rest.JerseyComments;
 import rest.JerseyPosts;
 
 /**
  *
  * @author Alberto
  */
-@WebServlet(name = "AddPostServlet", urlPatterns = {"/AddPost"})
-public class AddPostServlet extends HttpServlet {
+@WebServlet(name = "SeePostServlet", urlPatterns = {"/SeePost"})
+public class SeePostServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,36 +36,15 @@ public class AddPostServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String type = request.getParameter("type");
-        switch (type) {
-            case "new":
-                getServletContext().getRequestDispatcher("/addpost.jsp").forward(request, response);
-                break;
-            case "commit":
-                String user = request.getParameter("user"),
-                 title = request.getParameter("title"),
-                 desc = request.getParameter("description"),
-                 city = request.getParameter("city"),
-                 thumbnail = request.getParameter("thumbnail");
-                String[] images = request.getParameterValues("image");
-                StringBuilder image = new StringBuilder(thumbnail.substring(0, thumbnail.length() - 4)
-                        + "_t.jpg");
-                for (String i : images) {
-                    image.append(";").append(i);
-                }
-                Posts post = new Posts();
-                post.setAutor(user);
-                post.setCiudad(city);
-                post.setFechaCreacion(new Date());
-                post.setImagen(image.toString());
-                post.setTexto(desc);
-                post.setTitulo(title);
-                JerseyPosts jersey = new JerseyPosts();
-                jersey.create(post);
-                jersey.close();
-                response.sendRedirect(getServletContext().getContextPath());
-                break;
-        }
+        JerseyPosts jposts = new JerseyPosts();
+        Posts post = jposts.find(Posts.class, request.getParameter("id"));
+        request.setAttribute("post", post);
+        jposts.close();
+        JerseyComments jcomm = new JerseyComments();
+        List<Comments> comments = jcomm.findByPost(new GenericType<List<Comments>>(){},
+                post.getId().toString());
+        request.setAttribute("comments", comments);
+        getServletContext().getRequestDispatcher("/seepost.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

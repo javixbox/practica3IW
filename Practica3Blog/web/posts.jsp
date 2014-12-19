@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Aplicaci&oacute;n de blogs</title>
     </head>
     <body>
         <%
@@ -32,7 +32,7 @@
             <tr>
                 <td><h2><a href="<%= getServletContext().getContextPath()%>/SeePost?id=<%= p.getId()%>">
                             <%= p.getTitulo()%></a></h2></td>
-                <td><img src="<%= p.getImagen() != null ? p.getImagen().substring(0, p.getImagen().length() - 4) + "_t.jpg" : "#"%>"/></td>
+                <td><img src="<%= p.getImagen() != null ? p.getImagen().split(";")[0] : "#"%>"/></td>
                 <td><%= p.getTexto().length() >= 150 ? p.getTexto().substring(0, 147) + "..."
                         : p.getTexto()%></td>
             </tr>

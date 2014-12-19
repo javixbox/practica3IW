@@ -5,8 +5,6 @@
  */
 package rest;
 
-import entity.Posts;
-import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -68,8 +66,7 @@ public class JerseyPosts {
     }
 
     public <T> T findAll(GenericType<T> responseType) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void remove(String id) throws ClientErrorException {

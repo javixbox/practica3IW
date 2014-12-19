@@ -30,7 +30,12 @@
                 var latlng = new google.maps.LatLng(-34.397, 150.644);
                 var mapOptions = {
                     zoom: 8,
-                    center: latlng
+                    center: latlng,
+                    panControl: false,
+                    zoomControl: false,
+                    scaleControl: false,
+                    streetViewControl: true,
+                    draggable: false
                 };
                 map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             }
@@ -45,7 +50,7 @@
                             position: results[0].geometry.location
                         });
                         window.parent.setCity(address);
-                    } else {
+                    } else{
                         window.parent.$("#imagePanel")
                                 .html('<h1>Geocode was not successful for the following reason: '
                                 + status + '.<br/>Please, search again.<h1/>');

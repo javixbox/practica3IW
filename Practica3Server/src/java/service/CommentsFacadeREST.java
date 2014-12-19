@@ -52,6 +52,19 @@ public class CommentsFacadeREST extends AbstractFacade<Comments> {
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
+    
+    /**
+     * Método para buscar la lista de comentarios de un post.
+     * @param id La ID del post.
+     * @return 
+     */
+    @GET
+    @Path("post/{id}")
+    @Produces({"application/json"})
+    public List<Comments> findByPost(@PathParam("id") Integer id){
+        return em.createNamedQuery("Comments.findByPostId", Comments.class).setParameter("postId", id)
+                .getResultList();
+    }
 
     @GET
     @Path("{id}")

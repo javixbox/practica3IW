@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Posts.findByAutor", query = "SELECT p FROM Posts p WHERE p.autor = :autor"),
     @NamedQuery(name = "Posts.findByTitulo", query = "SELECT p FROM Posts p WHERE p.titulo = :titulo"),
     @NamedQuery(name = "Posts.findByFechaCreacion", query = "SELECT p FROM Posts p WHERE p.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "Posts.findByCiudad", query = "SELECT p FROM Posts p WHERE p.ciudad = :ciudad"),
-    @NamedQuery(name = "Posts.findByImagen", query = "SELECT p FROM Posts p WHERE p.imagen = :imagen")})
+    @NamedQuery(name = "Posts.findByCiudad", query = "SELECT p FROM Posts p WHERE p.ciudad = :ciudad")})
 public class Posts implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -69,7 +68,8 @@ public class Posts implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "ciudad")
     private String ciudad;
-    @Size(max = 90)
+    @Lob
+    @Size(max = 65535)
     @Column(name = "imagen")
     private String imagen;
 

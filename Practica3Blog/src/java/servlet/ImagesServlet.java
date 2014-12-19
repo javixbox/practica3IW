@@ -46,9 +46,15 @@ public class ImagesServlet extends HttpServlet {
             if (list.isEmpty()) {
                 pw.println("<h1>No existen fotos de la ciudad buscada.<h1/>");
             } else {
-                pw.println("<h1>Elija una foto:<h1/><br/>");
+                pw.println("<h1>Elija una foto de portada:<h1/><br/>");
                 for (Photo p : list) {
-                    pw.println("<label><input type=\"radio\" name=\"image\" value=\""
+                    pw.println("<label><input type=\"radio\" name=\"thumbnail\" value=\""
+                            + p.getMediumUrl() + "\" /><img src=\"" + p.getMediumUrl() + "\" width=\"400px\""
+                            + " height=\"400px\"></label>");
+                }
+                pw.println("<br/><h1>Elija varias fotos para mostrar:<h1/><br/>");
+                for (Photo p : list) {
+                    pw.println("<label><input type=\"checkbox\" name=\"image\" value=\""
                             + p.getMediumUrl() + "\" /><img src=\"" + p.getMediumUrl() + "\" width=\"400px\""
                             + " height=\"400px\"></label>");
                 }

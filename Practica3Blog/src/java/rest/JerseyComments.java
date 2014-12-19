@@ -5,9 +5,12 @@
  */
 package rest;
 
+import java.text.MessageFormat;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Jersey REST client generated for REST resource:CommentsFacadeREST
@@ -46,6 +49,12 @@ public class JerseyComments {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+    
+    public <T> T findByPost(GenericType<T> responseType, String id){
+        WebTarget resource = webTarget;
+        resource = resource.path(MessageFormat.format("post/{id}", new Object[]{ id }));
+        return resource.request(MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T findRange(Class<T> responseType, String from, String to) throws ClientErrorException {

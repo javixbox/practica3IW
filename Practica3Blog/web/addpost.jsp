@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>A&ntilde;adir blog</title>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
         <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
@@ -44,7 +44,7 @@
             function setCity(address) {
                 if (request)
                     request.abort();
-                $("#imagePanel").html('');
+                $("#imagePanel").html("Buscando...");
                 document.getElementById('addressHidden').value = address;
                 request = $.ajax({
                     url: "${pageContext.request.contextPath}/getImages",

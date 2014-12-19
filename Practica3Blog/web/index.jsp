@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Aplicaci&oacute;n de blogs</title>
     </head>
     <body>
         <% getServletContext().getRequestDispatcher("/index").forward(request, response); %>
