@@ -53,7 +53,7 @@ public class JerseyComments {
     
     public <T> T findByPost(GenericType<T> responseType, String id){
         WebTarget resource = webTarget;
-        resource = resource.path(MessageFormat.format("post/{id}", new Object[]{ id }));
+        resource = resource.path(MessageFormat.format("post/{0}", new Object[]{ id }));
         return resource.request(MediaType.APPLICATION_JSON).get(responseType);
     }
 

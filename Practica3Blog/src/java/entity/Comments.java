@@ -6,15 +6,20 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,9 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Comments.findAll", query = "SELECT c FROM Comments c"),
     @NamedQuery(name = "Comments.findById", query = "SELECT c FROM Comments c WHERE c.id = :id"),
-    @NamedQuery(name = "Comments.findByPostId", query = "SELECT c FROM Comments c WHERE c.postId = :postId"),
+    @NamedQuery(name = "Comments.findByPostId", query = "SELECT c FROM Comments c WHERE c.postsId.id = :postId"),
     @NamedQuery(name = "Comments.findByAutor", query = "SELECT c FROM Comments c WHERE c.autor = :autor"),
-    @NamedQuery(name = "Comments.findByCommentText", query = "SELECT c FROM Comments c WHERE c.commentText = :commentText")})
+    @NamedQuery(name = "Comments.findByCommentText", query = "SELECT c FROM Comments c WHERE c.commentText = :commentText"),
+    @NamedQuery(name = "Comments.findByFechaCreacion", query = "SELECT c FROM Comments c WHERE c.fechaCreacion = :fechaCreacion")})
 public class Comments implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,10 +45,6 @@ public class Comments implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "postId")
-    private int postId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -53,6 +55,14 @@ public class Comments implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "commentText")
     private String commentText;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fechaCreacion")
+    @Temporal(TemporalType.DATE)
+    private Date fechaCreacion;
+    @JoinColumn(name = "posts_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Posts postsId;
 
     public Comments() {
     }
@@ -61,11 +71,11 @@ public class Comments implements Serializable {
         this.id = id;
     }
 
-    public Comments(Integer id, int postId, String autor, String commentText) {
+    public Comments(Integer id, String autor, String commentText, Date fechaCreacion) {
         this.id = id;
-        this.postId = postId;
         this.autor = autor;
         this.commentText = commentText;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public Integer getId() {
@@ -74,14 +84,6 @@ public class Comments implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
     }
 
     public String getAutor() {
@@ -98,6 +100,22 @@ public class Comments implements Serializable {
 
     public void setCommentText(String commentText) {
         this.commentText = commentText;
+    }
+
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Posts getPostsId() {
+        return postsId;
+    }
+
+    public void setPostsId(Posts postsId) {
+        this.postsId = postsId;
     }
 
     @Override

@@ -5,23 +5,28 @@
  */
 package servlet;
 
+import entity.Comments;
 import entity.Posts;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import rest.JerseyComments;
 import rest.JerseyPosts;
 
 /**
  *
  * @author Alberto
  */
-@WebServlet(name = "AddPostServlet", urlPatterns = {"/AddPost"})
-public class AddPostServlet extends HttpServlet {
+@WebServlet(name = "AddCommentServlet", urlPatterns = {"/AddComment"})
+public class AddCommentServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,38 +40,26 @@ public class AddPostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String type = request.getParameter("type");
-        switch (type) {
-            case "new":
-                getServletContext().getRequestDispatcher("/addpost.jsp").forward(request, response);
-                break;
-            case "commit":
-                String user = request.getParameter("user"),
-                 title = request.getParameter("title"),
-                 desc = request.getParameter("description"),
-                 city = request.getParameter("city"),
-                 thumbnail = request.getParameter("thumbnail");
-                String[] images = request.getParameterValues("image");
-                StringBuilder image = new StringBuilder(thumbnail != null
-                        ? thumbnail.substring(0, thumbnail.length() - 4) + "_t.jpg" : "#");
-                if (images != null) {
-                    for (String i : images) {
-                        image.append(";").append(i);
-                    }
-                }
-                Posts post = new Posts();
-                post.setAutor(URLEncoder.encode(user, "UTF-8"));
-                post.setCiudad(URLEncoder.encode(city, "UTF-8"));
-                post.setFechaCreacion(new Date());
-                post.setImagen(image.toString());
-                post.setTexto(URLEncoder.encode(desc, "UTF-8"));
-                post.setTitulo(URLEncoder.encode(title, "UTF-8"));
-                JerseyPosts jersey = new JerseyPosts();
-                jersey.create(post);
-                jersey.close();
-                response.sendRedirect(getServletContext().getContextPath());
-                break;
-        }
+        response.setCharacterEncoding("UTF-8");
+        String user = request.getParameter("username"), comment = request.getParameter("commentText"),
+                id = request.getParameter("id");
+        JerseyPosts jerseyp = new JerseyPosts();
+        Posts p = jerseyp.find(Posts.class, id);
+        jerseyp.close();
+        Comments c = new Comments();
+        c.setAutor(URLEncoder.encode(user, "UTF-8"));
+        c.setCommentText(URLEncoder.encode(comment, "UTF-8"));
+        c.setPostsId(p);
+        c.setFechaCreacion(new Date());
+        JerseyComments jersey = new JerseyComments();
+        jersey.create(c);
+        jersey.close();
+        PrintWriter pw = response.getWriter();
+        pw.println("<div>");
+        pw.println("<b>" + user + ":</b><br/>");
+        pw.println("<small>" + DateFormat.getInstance().format(c.getFechaCreacion()) + "</small><br/>");
+        pw.println(comment);
+        pw.println("</div>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

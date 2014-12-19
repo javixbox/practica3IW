@@ -4,6 +4,7 @@
     Author     : Alberto
 --%>
 
+<%@page import="java.net.URLDecoder"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.Posts"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,10 +32,10 @@
             %>
             <tr>
                 <td><h2><a href="<%= getServletContext().getContextPath()%>/SeePost?id=<%= p.getId()%>">
-                            <%= p.getTitulo()%></a></h2></td>
+                            <%= URLDecoder.decode(p.getTitulo(), "UTF-8") %></a></h2></td>
                 <td><img src="<%= p.getImagen() != null ? p.getImagen().split(";")[0] : "#"%>"/></td>
-                <td><%= p.getTexto().length() >= 150 ? p.getTexto().substring(0, 147) + "..."
-                        : p.getTexto()%></td>
+                <td><%= p.getTexto().length() >= 150 ? URLDecoder.decode(p.getTexto(), "UTF-8")
+                        .substring(0, 147) + "..." : URLDecoder.decode(p.getTexto(), "UTF-8") %></td>
             </tr>
             <%
                 }
